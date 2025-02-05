@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Entities
+model Usuario {
+  id                 Int                 @id @default(autoincrement())
+  nome               String
+  telefone           String
+  email              String              @unique
+  senha              String
+  agendamentos       Agendamento[]
+  //  pacotes            UsuarioPacote[]
+  //  agendamentosPacote AgendamentoPacote[]
+  usuarioPermissoes  UsuarioPermissao[]
+  avaliacoesBarbeiro AvaliacaoBarbeiro[]
+}
+
+model Agendamento {
+  id         Int      @id @default(autoincrement())
+  data       DateTime
+  usuarioId  Int
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  barbeiroId Int
+  barbeiro   Barbeiro @relation(fields: [barbeiroId], references: [id], onDelete: Cascade)
+  servicoId  Int
+  servico    Servico  @relation(fields: [servicoId], references: [id], onDelete: Cascade)
+}
+
+model Barbeiro {
+  id                 Int                 @id @default(autoincrement())
+  nome               String
+  telefone           String
+  senha              String
+  //  usuarioPacote      UsuarioPacote[]
+  agendamentos       Agendamento[]
+  avaliacoesBarbeiro AvaliacaoBarbeiro[]
+}
+
+model Servico {
+  id            Int           @id @default(autoincrement())
+  tipoServicoId Int
+  descricao     String
+  valor         Float
+  duracao       Int
+  agendamentos  Agendamento[]
+  //  pacotesServico PacoteServico[]
+}
+
+model TipoServico {
+  id        Int    @id @default(autoincrement())
+  descricao String
+}
+
+// model Pacote {
+//   id                  Int                 @id @default(autoincrement())
+//   numeroServicosCorte Int
+//   numeroServicosBarba Int
+//   tipoPacoteId        Int
+//   usuarios            UsuarioPacote[]
+//   agendamentosPacote  AgendamentoPacote[]
+//   pacotesServico      PacoteServico[]
+// }
+
+// model TipoPacote {
+//   id          Int     @id @default(autoincrement())
+//   descricao   String
+//   qualquerDia Boolean
+// }
+
+model Permissao {
+  id                Int                @id @default(autoincrement())
+  descricao         String
+  usuariosPermissao UsuarioPermissao[]
+}
+
+// Relationships
+// model UsuarioPacote {
+//   id         Int      @id @default(autoincrement())
+//   usuarioId  Int
+//   usuario    Usuario  @relation(fields: [usuarioId], references: [id])
+//   barbeiroId Int
+//   barbeiro   Barbeiro @relation(fields: [barbeiroId], references: [id])
+//   pacoteId   Int
+//   pacote     Pacote   @relation(fields: [pacoteId], references: [id])
+// }
+
+// model AgendamentoPacote {
+//   id        Int      @id @default(autoincrement())
+//   data      DateTime
+//   usuarioId Int
+//   usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+//   pacoteId  Int
+//   pacote    Pacote   @relation(fields: [pacoteId], references: [id])
+// }
+
+// model PacoteServico {
+//   id        Int     @id @default(autoincrement())
+//   pacoteId  Int
+//   pacote    Pacote  @relation(fields: [pacoteId], references: [id])
+//   servicoId Int
+//   servico   Servico @relation(fields: [servicoId], references: [id])
+// }
+
+model UsuarioPermissao {
+  id          Int       @id @default(autoincrement())
+  usuarioId   Int
+  usuario     Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  permissaoId Int
+  permissao   Permissao @relation(fields: [permissaoId], references: [id], onDelete: Cascade)
+}
+
+model AvaliacaoBarbeiro {
+  id         Int      @id @default(autoincrement())
+  avaliacao  Int
+  usuarioId  Int
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  barbeiroId Int
+  barbeiro   Barbeiro @relation(fields: [barbeiroId], references: [id], onDelete: Cascade)
+}
