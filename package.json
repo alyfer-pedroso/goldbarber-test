@@ -6,7 +6,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "start": "node dist/main.js",
+    "start": "npx prisma db pull && npx prisma generate && tsc",
     "build": "tsc",
     "dev": "ts-node-dev --ignore-watch node_modules src/main.ts"
   },
