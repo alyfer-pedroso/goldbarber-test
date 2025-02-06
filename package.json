@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "node dist/src/main.js",
-    "build": "npx primsa db pull && npx prisma generate && tsc",
+    "build": "npx prisma db pull && npx prisma generate && tsc",
     "dev": "ts-node-dev --ignore-watch node_modules src/main.ts"
   },
   "author": "",
