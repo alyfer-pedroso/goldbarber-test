@@ -7,7 +7,7 @@
       "use": "@vercel/node",
       "config": {
         "installCommand": "npm install",
-        "buildCommand": "npx prisma db pull && npx prisma generate && npm run vercel-build",
+        "buildCommand": "npx prisma db pull && npx prisma generate && npm run build",
         "includeFiles": ["tsconfig.json"]
       }
     }
